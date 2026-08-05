@@ -1,0 +1,769 @@
+
+Actividad 03
+
+Distribuciones de probabilidad
+Analicemos juntos y detenidamente este ejemplo.
+En tus propias palabras cuál es la diferencia entre una distribución uniforme y una no uniforme de números aleatorios.
+R/ En una distribución uniforme los valores tienen un mismo porcentaje de posibilidades de aparecer, haciendo que se sienta balanceado el lienzo. En cambio en una distribución no aleatoria las chances de aparecer en ciertos lugares estan determinadas con anterioridad.
+Modifica el código de la caminata aleatoria para que utilice una distribución no uniforme, favoreciendo el movimiento hacia la derecha.
+R/ https://youtu.be/HlM6PDCWLNQ
+
+Código sketch.js: 
+
+"// The Nature of Code
+// Daniel Shiffman
+// http://natureofcode.com
+
+let walker;
+
+function setup() {
+  createCanvas(640, 240);
+  walker = new Walker();
+  background(255);
+}
+
+function draw() {
+  walker.step();
+  walker.show();
+}
+
+class Walker {
+  constructor() {
+    this.x = width / 2;
+    this.y = height / 2;
+  }
+
+  show() {
+    stroke(0);
+    point(this.x, this.y);
+  }
+
+  step() {
+    const r = random(1);
+
+    if (r < 0.55) {
+      // Derecha (55%)
+      this.x++;
+    } else if (r < 0.70) {
+      // Izquierda (15%)
+      this.x--;
+    } else if (r < 0.85) {
+      // Abajo (15%)
+      this.y++;
+    } else {
+      // Arriba (15%)
+      this.y--;
+    }
+
+    // Evita que el punto se salga del canvas
+    this.x = constrain(this.x, 0, width - 1);
+    this.y = constrain(this.y, 0, height - 1);
+  }
+}"
+
+Actividad 04
+
+Distribución Normal
+
+Analicemos juntos y detenidamente este ejemplo.
+Crea un nuevo sketch en p5.js que represente una distribución normal, pero visualizándola de manera diferente a la del ejemplo.
+
+R/ https://youtu.be/5-UvwXQVqcU
+
+Actividad 05
+
+Distribución personalizada: Lévy flight
+Analicemos juntos y detenidamente el concepto de Lévy flight.
+
+Ahora vas a:
+
+Crea un nuevo sketch en p5.js donde modifiques uno de los ejemplos anteriores y adiciones de Lévy flight.
+Explica por qué usaste esta técnica y qué resultados esperabas obtener.
+
+R/ Modifiqué la caminata aleatoria implementando un comportamiento inspirado en un Lévy flight. La mayoría de los movimientos son pasos cortos, lo que genera un recorrido continuo, pero ocasionalmente el sistema realiza un salto mucho más largo. Elegí esta técnica porque permite que el recorrido explore nuevas zonas del espacio de manera inesperada sin perder su comportamiento habitual. El resultado esperado era una trayectoria compuesta por desplazamientos pequeños interrumpidos por eventos excepcionales, representando la naturaleza de un Lévy flight.
+
+Link: https://youtu.be/TGUcO9by52c
+
+Actividad 06
+Ruido Perlin
+Analicemos junto el concepto de ruido Perlin analizando la figura 0.4: “A graph of Perlin noise values over time (left) and of random noise values over time (right)”.
+
+Una vez has entendido el concepto de ruido Perlin, vas a pensar en una nueva manera de visualizarlo.
+
+Crea un nuevo sketch en p5.js donde los visualices.
+Explica por qué lo visualizaste de esa manera y qué resultados esperabas obtener.
+
+R/ En esta actividad decidí representar el ruido Perlin mediante una serpiente que recorre el canvas. La cabeza se mueve utilizando noise(), lo que genera un desplazamiento suave y continuo, mientras que el cuerpo sigue las posiciones anteriores de la cabeza, dando la sensación de un movimiento natural.
+
+Añadí detalles visuales como un degradado de color, una cola más delgada, ojos orientados hacia la dirección del movimiento, una lengua y una estela para mejorar la apariencia sin modificar el comportamiento del sistema.
+
+Elegí esta visualización porque permite apreciar claramente la diferencia entre noise() y random(): con ruido Perlin el movimiento es fluido y orgánico, mientras que con números aleatorios los cambios de dirección serían bruscos. El resultado esperado era obtener una animación que mostrara de forma intuitiva cómo el ruido Perlin produce transiciones suaves entre valores consecutivos.
+
+https://youtu.be/HWrpyYsJYaY
+
+
+Bitácora - Unidad 1
+Actividad 07 – Reto de diseño: Navegar la incertidumbre
+Intención conceptual
+
+El objetivo del proyecto fue representar la incertidumbre como un sistema con reglas, donde los comportamientos emergen a partir de distintas formas de aleatoriedad. En lugar de controlar directamente los elementos de la escena, el usuario únicamente modifica las probabilidades del sistema mediante la posición del mouse, haciendo que los peces tengan una ligera tendencia a acercarse sin perder su movimiento autónomo.
+
+La experiencia busca transmitir la idea de que pequeños cambios en las reglas pueden producir comportamientos diferentes sin eliminar el componente impredecible.
+
+Momento 1 – Posibilidad
+
+Al comenzar la simulación todos los peces poseen trayectorias independientes generadas mediante ruido Perlin. Ninguna dirección está predeterminada y cualquier recorrido parece posible.
+
+Concepto utilizado:
+
+Ruido Perlin.
+Momento 2 – Tendencia
+
+Cuando el visitante acerca el mouse, los peces cercanos desarrollan una ligera preferencia por desplazarse hacia esa zona. La interacción modifica únicamente las probabilidades del movimiento y no controla completamente el comportamiento de los peces.
+
+Conceptos utilizados:
+
+Distribuciones de probabilidad.
+Interacción.
+Momento 3 – Normalidad
+
+Durante la mayor parte del tiempo los peces realizan movimientos suaves y continuos gracias al ruido Perlin, generando trayectorias naturales similares a las de un cardumen.
+
+Concepto utilizado:
+
+Ruido Perlin.
+Momento 4 – Excepción
+
+De forma muy ocasional algunos peces realizan un salto largo en su trayectoria mediante un Lévy Flight. Estos eventos rompen el comportamiento habitual y permiten que aparezcan recorridos inesperados.
+
+Concepto utilizado:
+
+Lévy Flight.
+Momento 5 – Influencia
+
+El usuario nunca controla directamente el sistema. Su presencia únicamente altera el comportamiento probabilístico de los peces, mientras el ecosistema continúa funcionando de manera autónoma incluso sin interacción.
+
+Conceptos implementados
+
+Durante el desarrollo se implementaron cuatro conceptos vistos en la unidad:
+
+Ruido Perlin para producir movimientos suaves y orgánicos.
+Distribuciones de probabilidad para modificar el comportamiento mediante la interacción.
+Lévy Flight para generar desplazamientos excepcionales.
+Caminatas aleatorias controladas por ruido para producir variaciones continuas entre los individuos.
+Decisiones tomadas
+
+Inicialmente se planteó realizar un sistema de partículas abstractas. Sin embargo, se decidió representar los agentes como peces para facilitar la interpretación visual del movimiento generado por el ruido Perlin.
+
+También se descartó que el mouse controlara completamente los peces, ya que el objetivo del reto consistía en influir sobre el sistema y no dirigirlo directamente.
+
+Finalmente se añadieron plantas y burbujas para reforzar la sensación de un ecosistema submarino sin alterar el comportamiento principal de la simulación.
+
+Dificultades y soluciones
+
+Durante el desarrollo aparecieron varios problemas relacionados con la implementación del movimiento.
+
+En las primeras versiones los peces permanecían demasiado tiempo concentrados en el centro de la pantalla, por lo que se ajustaron los parámetros del ruido Perlin para distribuir mejor sus recorridos.
+
+También se experimentó con una corriente global del agua, pero producía rotaciones poco naturales y movimientos bruscos, por lo que fue descartada.
+
+Posteriormente se implementó la interacción con el mouse mediante una modificación de las probabilidades de movimiento, logrando una respuesta más orgánica.
+
+Finalmente se añadió una interacción sencilla entre peces y plantas, haciendo que estas se inclinaran ligeramente cuando un pez pasaba cerca.
+
+Uso de IA generativa
+
+Se utilizó IA generativa como apoyo durante el proceso de desarrollo para explorar diferentes alternativas de implementación, mejorar la estructura del código y proponer nuevas ideas de interacción.
+
+Las propuestas obtenidas fueron modificadas y adaptadas manualmente para ajustarse al concepto del proyecto y a los requisitos del reto. La versión final integra únicamente las soluciones que funcionaban correctamente dentro del sistema desarrollado.
+
+Evolución del proyecto
+Versión 1
+
+La primera versión consistía únicamente en un cardumen de peces moviéndose mediante ruido Perlin. El objetivo principal era comprobar que el movimiento resultara fluido y orgánico antes de añadir nuevos elementos.
+
+En esta etapa se experimentó con diferentes velocidades y tamaños para evitar que todos los peces se comportaran exactamente igual.
+
+Cambios realizados
+
+Movimiento mediante ruido Perlin.
+Peces con tamaños y colores aleatorios.
+Fondo simple.
+Sin interacción.
+Versión 2
+
+Se intentó utilizar un campo de flujo (Flow Field) basado en ruido Perlin para que todos los peces compartieran una corriente general del agua.
+
+Aunque técnicamente funcionaba, el resultado visual producía giros muy bruscos y movimientos poco naturales, por lo que finalmente esta aproximación fue descartada.
+
+Este experimento permitió entender mejor cómo influye la forma de aplicar el ruido Perlin sobre el comportamiento del sistema.
+
+Cambios realizados
+
+Implementación de un Flow Field.
+Corriente global utilizando Perlin Noise.
+Movimiento continuo entre los bordes del escenario.
+Prueba descartada por su comportamiento poco natural.
+Versión Final
+
+Después de comparar los resultados anteriores, se decidió volver al movimiento original basado en ruido Perlin y enriquecer el ecosistema en lugar de complicar la física del movimiento.
+
+Se añadieron plantas animadas, burbujas, un degradado para representar la profundidad del agua, interacción del usuario mediante el mouse y eventos excepcionales utilizando Lévy Flight.
+
+El resultado final mantiene un comportamiento autónomo donde el usuario únicamente influye sobre las probabilidades del sistema.
+
+Cambios realizados
+
+Degradado para representar profundidad.
+Plantas generadas proceduralmente.
+Burbujas.
+Interacción del mouse.
+Lévy Flight.
+Variación de tamaños de plantas.
+Movimiento reactivo de las plantas.
+
+Reflexión final
+
+El proyecto permitió comprender que la incertidumbre puede surgir a partir de reglas simples. Al combinar diferentes formas de aleatoriedad fue posible obtener comportamientos complejos y naturales sin controlar directamente cada elemento del sistema.
+
+La interacción del usuario demuestra que pequeñas modificaciones en las probabilidades producen cambios perceptibles en el comportamiento colectivo, manteniendo siempre la autonomía del ecosistema.
+
+ Código Versión 1 del reto 
+
+"let fishes = [];
+const NUM_FISH = 70;
+
+function setup() {
+  createCanvas(540, 960); // Formato 9:16
+  angleMode(RADIANS);
+
+  for (let i = 0; i < NUM_FISH; i++) {
+    fishes.push(new Fish());
+  }
+}
+
+function draw() {
+  // Fondo con transparencia para dejar una estela suave
+  background(8, 18, 35, 40);
+
+  for (let fish of fishes) {
+    fish.update();
+    fish.display();
+  }
+}
+
+class Fish {
+  constructor() {
+
+    this.xoff = random(1000);
+    this.yoff = random(1000);
+
+    this.prevX = noise(this.xoff) * width;
+    this.prevY = noise(this.yoff) * height;
+
+    this.x = this.prevX;
+    this.y = this.prevY;
+
+    this.speed = random(0.002, 0.005);
+
+    this.size = random(12, 24);
+
+    this.bodyColor = color(
+      random(80, 180),
+      random(150, 230),
+      random(180, 255)
+    );
+
+    this.angle = 0;
+  }
+
+  update() {
+
+    this.prevX = this.x;
+    this.prevY = this.y;
+
+    this.xoff += this.speed;
+    this.yoff += this.speed;
+
+    this.x = noise(this.xoff) * width;
+    this.y = noise(this.yoff) * height;
+
+    this.angle = atan2(
+      this.y - this.prevY,
+      this.x - this.prevX
+    );
+  }
+
+  display() {
+
+    push();
+
+    translate(this.x, this.y);
+    rotate(this.angle);
+
+    noStroke();
+
+    // Cola
+    fill(
+      red(this.bodyColor) * 0.8,
+      green(this.bodyColor) * 0.8,
+      blue(this.bodyColor) * 0.8
+    );
+
+    triangle(
+      -this.size * 0.9, 0,
+      -this.size * 1.5, -this.size * 0.35,
+      -this.size * 1.5, this.size * 0.35
+    );
+
+    // Cuerpo
+    fill(this.bodyColor);
+    ellipse(0, 0, this.size * 1.8, this.size);
+
+    // Ojo
+    fill(255);
+    circle(this.size * 0.45, -this.size * 0.12, this.size * 0.22);
+
+    fill(0);
+    circle(this.size * 0.47, -this.size * 0.12, this.size * 0.1);
+
+    pop();
+  }
+}"
+
+Códgio versión 2 del reto:
+
+"let fishes = [];
+const NUM_FISH = 70;
+let flowTime = 0;
+
+function setup() {
+  createCanvas(540, 960); // Formato 9:16
+  angleMode(RADIANS);
+
+  for (let i = 0; i < NUM_FISH; i++) {
+    fishes.push(new Fish());
+  }
+}
+
+function draw() {
+  // Fondo con transparencia para dejar una estela suave
+  background(8, 18, 35, 40);
+
+  for (let fish of fishes) {
+    fish.update();
+    fish.display();
+    flowTime += 0.003;
+  }
+}
+
+class Fish {
+constructor() {
+
+  this.x = random(width);
+  this.y = random(height);
+
+  this.prevX = this.x;
+  this.prevY = this.y;
+
+  this.size = random(12,24);
+
+  this.speed = random(1.2,2.2);
+
+  this.bodyColor = color(
+    random(80,180),
+    random(150,230),
+    random(180,255)
+  );
+
+  // Cada pez conserva un poco de personalidad
+  this.offset = random(1000);
+
+  this.angle = 0;
+}
+
+update(){
+
+  this.prevX = this.x;
+  this.prevY = this.y;
+
+  // Campo de flujo usando Perlin Noise
+  let angle =
+      noise(
+        this.x * 0.003,
+        this.y * 0.003,
+        flowTime
+      ) * TWO_PI * 2;
+
+  // Un poquito de personalidad propia
+  angle += map(
+      noise(this.offset + frameCount*0.01),
+      0,
+      1,
+      -0.4,
+      0.4
+  );
+
+  this.x += cos(angle) * this.speed;
+  this.y += sin(angle) * this.speed;
+
+  this.angle = atan2(
+      this.y-this.prevY,
+      this.x-this.prevX
+  );
+
+  // Si sale por un lado entra por el otro
+  if(this.x < -20) this.x = width+20;
+  if(this.x > width+20) this.x = -20;
+
+  if(this.y < -20) this.y = height+20;
+  if(this.y > height+20) this.y = -20;
+}
+
+  display() {
+
+    push();
+
+    translate(this.x, this.y);
+    rotate(this.angle);
+
+    noStroke();
+
+    // Cola
+    fill(
+      red(this.bodyColor) * 0.8,
+      green(this.bodyColor) * 0.8,
+      blue(this.bodyColor) * 0.8
+    );
+
+    triangle(
+      -this.size * 0.9, 0,
+      -this.size * 1.5, -this.size * 0.35,
+      -this.size * 1.5, this.size * 0.35
+    );
+
+    // Cuerpo
+    fill(this.bodyColor);
+    ellipse(0, 0, this.size * 1.8, this.size);
+
+    // Ojo
+    fill(255);
+    circle(this.size * 0.45, -this.size * 0.12, this.size * 0.22);
+
+    fill(0);
+    circle(this.size * 0.47, -this.size * 0.12, this.size * 0.1);
+
+    pop();
+  }
+}"
+
+Código versión Final del Reto
+
+"let fishes = [];
+const NUM_FISH = 70;
+let bubbles = [];
+let plants = [];
+
+function setup() {
+  createCanvas(540, 960); // Formato 9:16
+  angleMode(RADIANS);
+
+  for (let i = 0; i < NUM_FISH; i++) {
+    fishes.push(new Fish());
+    
+  }
+  for (let i = 0; i < 20; i++) {
+  bubbles.push(new Bubble());
+}
+
+for (let i = 0; i < 13; i++)
+plants.push(
+  new Plant(
+    map(i,0,12,25,width-25)
+  )
+);
+}
+
+
+
+function draw() {
+background(8,18,35);
+
+for(let y=0;y<height;y+=2){
+
+  let c=lerpColor(
+    color(18,45,85),
+    color(8,18,35),
+    y/height
+  );
+
+  stroke(c);
+
+  line(0,y,width,y);
+
+}
+
+for (let plant of plants) {
+  plant.update();
+  plant.display();
+}
+
+for (let bubble of bubbles) {
+  bubble.update();
+  bubble.display();
+}
+
+for (let fish of fishes) {
+  fish.update();
+  for(let plant of plants){
+
+  let d=dist(this.x,this.y,plant.x,height-plant.h*0.4);
+
+  if(d<45){
+
+    if(this.x<plant.x){
+
+      plant.bend=12;
+
+    }else{
+
+      plant.bend=-12;
+
+    }
+
+  }
+
+}
+  fish.display();
+}
+}
+class Fish {
+  constructor() {
+
+    this.xoff = random(1000);
+    this.yoff = random(1000);
+
+    this.prevX = noise(this.xoff) * width;
+    this.prevY = noise(this.yoff) * height;
+
+    this.x = this.prevX;
+    this.y = this.prevY;
+
+    this.speed = random(0.003, 0.0065);
+
+    this.size = random(12, 24);
+
+    this.bodyColor = color(
+      random(80, 180),
+      random(150, 230),
+      random(180, 255)
+    );
+
+    this.angle = 0;
+  }
+
+update() {
+
+  this.prevX = this.x;
+  this.prevY = this.y;
+
+  // Influencia del visitante
+  let d = dist(this.x, this.y, mouseX, mouseY);
+
+  let influence = 1;
+
+  if (d < 180) {
+    influence = 1.4;
+  }
+
+  this.xoff += this.speed * influence;
+  this.yoff += this.speed * 0.92 * influence;
+
+  // Lévy Flight
+  if (random(1) < 0.0007) {
+
+    this.xoff += random(-0.5,0.5);
+    this.yoff += random(-0.5,0.5);
+
+  }
+
+let margin = 25;
+
+this.x = map(noise(this.xoff),0,1,-margin,width+margin);
+this.y = map(noise(this.yoff),0,1,-margin,height+margin);
+
+// Influencia del mouse
+let e = dist(this.x, this.y, mouseX, mouseY);
+
+if (e < 170) {
+
+  let strength = map(d, 0, 170, 0.015, 0);
+
+  this.x = lerp(this.x, mouseX, strength);
+  this.y = lerp(this.y, mouseY, strength);
+
+}
+
+this.angle = atan2(
+  this.y - this.prevY,
+  this.x - this.prevX
+);
+}
+
+  display() {
+
+    push();
+
+    translate(this.x, this.y);
+    rotate(this.angle);
+
+    noStroke();
+
+    // Cola
+    fill(
+      red(this.bodyColor) * 0.8,
+      green(this.bodyColor) * 0.8,
+      blue(this.bodyColor) * 0.8
+    );
+
+    triangle(
+      -this.size * 0.9, 0,
+      -this.size * 1.5, -this.size * 0.35,
+      -this.size * 1.5, this.size * 0.35
+    );
+
+    // Cuerpo
+    fill(this.bodyColor);
+    ellipse(0, 0, this.size * 1.8, this.size);
+
+    // Ojo
+    fill(255);
+    circle(this.size * 0.45, -this.size * 0.12, this.size * 0.22);
+
+    fill(0);
+    circle(this.size * 0.47, -this.size * 0.12, this.size * 0.1);
+
+    pop();
+  }
+}
+  class Bubble{
+
+  constructor(){
+
+    this.reset();
+
+  }
+
+  reset(){
+
+    this.x=random(width);
+    this.y=random(height,height+300);
+
+    this.r=random(3,8);
+
+    this.speed=random(0.6,2);
+
+  }
+
+  update(){
+
+    this.y-=this.speed;
+
+    this.x+=map(noise(frameCount*0.01+this.x),0,1,-0.4,0.4);
+
+    if(this.y<-20){
+
+      this.reset();
+
+    }
+
+  }
+
+  display(){
+
+    noFill();
+
+    stroke(255,90);
+
+    strokeWeight(1);
+
+    circle(this.x,this.y,this.r);
+
+  }
+
+}class Plant{
+
+  constructor(x){
+
+    this.x=x;
+
+    this.seed=random(1000);
+
+    this.h=random(80,240);
+
+    this.bend=0;
+
+  }
+
+update(){
+
+  this.bend*=0.92;
+
+}
+
+  display(){
+
+    stroke(40,170,110);
+
+    strokeWeight(4);
+
+    noFill();
+
+    beginShape();
+
+    for(let y=0;y<this.h;y+=10){
+
+      let offset=map(
+        noise(this.seed,y*0.02,frameCount*0.01),
+        0,
+        1,
+        -18,
+        18
+      );
+
+      vertex(
+      this.x+offset+this.bend*(y/this.h),
+      height-y
+      );
+
+    }
+
+    endShape();
+
+  }
+  }"
+
+  Video demostración del reto:
+
+  https://youtu.be/gaLD-aMMb_4
+
+Autoevaluación:
+
+Criterios: 
+
+Encargo completo: interpreto los cinco momentos dentro de un mismo sistema visual.
+Cumplo y porqué: Sí cumplo, porque desarrollé el proyecto siguiendo una evolución clara desde una primera versión funcional hasta una versión final más compleja. El sistema mantiene una identidad visual durante toda la experiencia e incorpora los distintos momentos del proceso mediante cambios progresivos en el comportamiento de los peces, el entorno y la interacción, sin perder coherencia entre las versiones.
+
+Simulación con intención: utilizo al menos tres conceptos de la unidad para comunicar las ideas del encargo.
+Cumplo y porqué: Sí cumplo, porque la simulación no consiste únicamente en mover objetos de forma aleatoria. Utilicé Perlin Noise para generar trayectorias naturales, Lévy Flight para introducir cambios impredecibles en algunos recorridos y un sistema de interacción con el mouse que modifica el comportamiento del cardumen. Además, incorporé elementos ambientales como burbujas y plantas que reaccionan al movimiento de los peces para reforzar la sensación de un ecosistema vivo.
+
+Interacción significativa: la interacción modifica el comportamiento o las probabilidades del sistema, que también funciona sin intervención.	
+Cumplo y porqué: Sí cumplo, porque el sistema funciona de manera autónoma desde el momento en que inicia. Sin embargo, cuando el usuario acerca el cursor, los peces modifican su velocidad y trayectoria, alterando la dinámica general del cardumen. La interacción no reemplaza la simulación, sino que influye sobre ella y genera resultados diferentes según la participación del usuario.
+
+Prototipo funcional: la experiencia puede ejecutarse y recorrerse completa sin errores que impidan comprenderla.
+Cumplo y porqué: Sí cumplo, porque el prototipo puede ejecutarse completamente en p5.js y permite observar todos los comportamientos previstos. Durante el desarrollo corregí errores relacionados con el movimiento y la interacción hasta obtener una versión estable donde los peces, las plantas y las burbujas funcionan de forma continua.
+
+Proceso documentado: la bitácora evidencia avances, decisiones, dificultades, soluciones, uso de IA y enlace al prototipo.
+Cumplo y porqué: Sí cumplo, porque la bitácora registra las diferentes versiones del proyecto, los cambios realizados en cada etapa, las decisiones de diseño y programación, las dificultades encontradas y las soluciones implementadas. También documenta el uso de inteligencia artificial como apoyo para explorar alternativas de programación y mejorar el comportamiento del sistema, dejando claro cuáles fueron las decisiones finales tomadas durante el desarrollo.
+
+LINK P5JS: https://editor.p5js.org/natureofcode/sketches/O7PsvcpQ3
