@@ -766,6 +766,8 @@ Cumplo y porqué: Sí cumplo, porque el prototipo puede ejecutarse completamente
 Proceso documentado: la bitácora evidencia avances, decisiones, dificultades, soluciones, uso de IA y enlace al prototipo.
 Cumplo y porqué: Sí cumplo, porque la bitácora registra las diferentes versiones del proyecto, los cambios realizados en cada etapa, las decisiones de diseño y programación, las dificultades encontradas y las soluciones implementadas. También documenta el uso de inteligencia artificial como apoyo para explorar alternativas de programación y mejorar el comportamiento del sistema, dejando claro cuáles fueron las decisiones finales tomadas durante el desarrollo.
 
+Nota personal: 4.5
+
 LINK P5JS: https://editor.p5js.org/natureofcode/sketches/O7PsvcpQ3
 
 LINK YOUTUBE: https://studio.youtube.com/video/gaLD-aMMb_4/edit
