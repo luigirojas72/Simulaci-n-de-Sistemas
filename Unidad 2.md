@@ -391,6 +391,11 @@ if(md < 180){
 
 }"
 
+Autoevaluación:
+
+<img width="649" height="398" alt="Captura de pantalla 2026-08-05 160829" src="https://github.com/user-attachments/assets/0dffe994-930f-409a-8c50-9fd271b02fa6" />
+
+
 P5JS: https://editor.p5js.org/luigieprojas/sketches/Yk_eSiNOR 
 
 versión temprana del reto: https://youtu.be/5UpHcq483Wg 
