@@ -397,6 +397,7 @@ Autoevaluación:
 
 
 P5JS: https://editor.p5js.org/luigieprojas/sketches/Yk_eSiNOR 
+p5js nuevo: https://editor.p5js.org/luigieprojas/sketches/AKq9ezjrK
 
 versión temprana del reto: https://youtu.be/5UpHcq483Wg 
 versión final del reto: https://youtu.be/vWqJN2ww3wY
