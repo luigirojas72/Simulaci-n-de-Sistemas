@@ -30,7 +30,7 @@ Una sola población de ~7000 partículas (personas) atraviesa toda la charla. En
 6. **Comunidad**: una foto de un evento. Primero solo hay puntos (personas); luego aparecen las líneas y las personas cambian de color (transformación).
 7. **Confianza**: resortes rígidos y vínculos estables; la red crece sin dispersarse.
 8. **Rutas**: la experiencia se queda sobre los caminos; los jóvenes los recorren y algunos se desvían para abrir rutas nuevas.
-9. **Una visión, dos generaciones**: un solo círculo (la visión) con dos mitades de comportamiento distinto y sin vínculos entre ellas.
+9. **Una visión, dos generaciones**: un juego de relevos (pong). La barra izquierda está hecha de jóvenes y la derecha de experiencia; se pasan una misma visión: un birrete UPB en 3D. Si nadie la devuelve y toca el borde, la visión se rompe en partículas y vuelve a armarse: el juego es infinito. El contador mide los relevos seguidos. Las barras se mueven con clic sostenido arrastrando de arriba a abajo.
 10. **Trabajan juntas**: las mitades se mezclan y aparecen los vínculos rojos entre generaciones.
 11. **Los jóvenes son el presente**: solo la generación joven forma la imagen; la experiencia queda detrás.
 12. **El futuro se construye**: el edificio del Fórum se arma desde la base y los vínculos funcionan como andamio.
@@ -60,5 +60,6 @@ npm run dev
 
 - `src/field.js`: motor de partículas (resortes, ondas, vínculos, demostración).
 - `src/slides.js`: guion y estructura de cada momento.
+- `src/pong.js`: juego de relevos del momento 9 (birrete 3D, barras, explosión).
 - `src/shapes.js`: convierte fotos, logos y figuras en puntos objetivo.
 - `src/main.js`: navegación, texto y controles.

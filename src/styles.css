@@ -96,6 +96,17 @@ canvas {
   top: 560px;
 }
 
+.layout-top {
+  left: 0;
+  right: 0;
+  top: 120px;
+  text-align: center;
+}
+
+.layout-top .title {
+  font-size: 72px;
+}
+
 .layout-close {
   left: 120px;
   bottom: 120px;

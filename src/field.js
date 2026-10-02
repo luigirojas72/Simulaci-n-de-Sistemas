@@ -127,6 +127,19 @@ export class Field {
     this.mouse.on = on;
   }
 
+  // Las partículas cuyo objetivo cumple `match` salen disparadas y vuelven a su lugar después de un rato.
+  explode(x, y, match) {
+    for (const p of this.ps) {
+      if (!p.t || !match(p.t)) continue;
+      const dx = p.x - x, dy = p.y - y;
+      const d = Math.sqrt(dx * dx + dy * dy) || 1;
+      const v = 6 + Math.random() * 12;
+      p.vx += (dx / d) * v + (Math.random() - 0.5) * 4;
+      p.vy += (dy / d) * v + (Math.random() - 0.5) * 4;
+      p.release = 1.3 + Math.random() * 0.9;
+    }
+  }
+
   get elapsed() {
     return this.time - this.start;
   }
@@ -178,6 +191,8 @@ export class Field {
     const f = this.f;
     const t = this.time;
     const el = this.elapsed;
+    // Lógica propia del momento (por ejemplo, el juego de relevos).
+    if (f.update) f.update(this, el);
 
     if (f.waves && el - this.lastWave > f.waves.every) {
       this.waves.push({ x: f.waves.x, y: f.waves.y, t: el });
@@ -199,7 +214,7 @@ export class Field {
     if (r3 && !rot.dragging) {
       rot.vyaw += (r3.auto - rot.vyaw) * 0.02;
       rot.yaw += rot.vyaw;
-      rot.pitch += (0.2 - rot.pitch) * 0.01;
+      rot.pitch += ((r3.pitch ?? 0.2) - rot.pitch) * 0.01;
     }
     const cyw = Math.cos(rot.yaw), syw = Math.sin(rot.yaw);
     const cpt = Math.cos(rot.pitch), spt = Math.sin(rot.pitch);
@@ -322,7 +337,7 @@ export class Field {
         p.y = H - 40;
         p.vy *= -0.3;
       }
-      if (!active) {
+      if (!active && !p.t) {
         if (p.x < -30) p.x = W + 30;
         else if (p.x > W + 30) p.x = -30;
         if (p.y < -30) p.y = H + 30;

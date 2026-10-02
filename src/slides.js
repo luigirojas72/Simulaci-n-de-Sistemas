@@ -1,5 +1,6 @@
 // Guion del cliente (secuencia intacta) y la estructura que cada momento construye.
 import { W, H } from "./field.js";
+import { makePong } from "./pong.js";
 import { sampleShape, samplePhoto, place, local, drawContain, drawCap, drawGear, drawFlags } from "./shapes.js";
 
 const N = 7000;
@@ -54,6 +55,8 @@ export function buildSlides(A) {
 
   const logoTitle = logo(A.brandForum, 260, 200, 1400, 5000);
   const logoClose = logo(A.brandForum, 510, 110, 900, 3000);
+
+  const pong = makePong();
 
   // Símbolo de 90 años en capas: adelante la generación joven, atrás la experiencia.
   const symbol3d = [];
@@ -256,22 +259,11 @@ export function buildSlides(A) {
     {
       kicker: "Una visión",
       title: "Una visión. <em>Dos generaciones.</em>",
-      layout: "left",
-      // Un solo círculo (la visión) con dos mitades de comportamiento distinto, sin vínculos entre ellas.
-      formation: {
-        targets: [
-          ...disc(1330, 540, 380, 2800, (x) => x < 1316).map((p) => ({ ...p, gen: 1 })),
-          ...disc(1330, 540, 380, 2600, (x) => x > 1344).map((p) => ({ ...p, gen: 0 })),
-        ],
-        k: 0.05,
-        colorMode: "gen",
-        idleGen: [0.5, 9],
-        idleSpeedGen: [0.35, 2.4],
-        sizeGen: [3.2, 2.8],
-        links: { exp: 0.9, jov: 0.25, cross: 0 },
-        linkDist: 62,
-        ambientAlpha: 0.12,
-      },
+      layout: "top",
+      // Juego de relevos: dos generaciones se pasan una misma visión (el birrete).
+      // Si nadie la devuelve, se rompe en partículas y vuelve a armarse. Ver pong.js.
+      game: pong,
+      formation: pong.formation,
     },
     {
       kicker: "Juntas",

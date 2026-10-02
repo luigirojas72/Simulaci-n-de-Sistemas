@@ -35,6 +35,7 @@ function go(i) {
   field.removeGen = null;
   field.rot.yaw = 0;
   field.rot.pitch = 0.2;
+  if (s.game) s.game.reset();
   field.setFormation(s.formation);
   $("demo").classList.remove("show");
 
@@ -48,7 +49,7 @@ function go(i) {
 
   $("brand").classList.toggle("hidden", s.brand === false);
   $("qr").classList.toggle("show", !!s.qr);
-  document.body.classList.toggle("draggable", !!s.drag);
+  document.body.classList.toggle("draggable", !!s.drag || !!s.game);
   $("count").textContent = `${String(index + 1).padStart(2, "0")}`;
 }
 
@@ -91,8 +92,10 @@ addEventListener("keydown", (e) => {
 
 // Arrastrar gira el objeto 3D del cierre; en el resto de momentos el puntero perturba la estructura.
 let drag = null;
+let game = null;
 addEventListener("pointermove", (e) => {
   field.setPointer(e.clientX, e.clientY, true);
+  if (game) game.move(field.mouse.x, field.mouse.y);
   if (!drag) return;
   const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
   drag = { x: e.clientX, y: e.clientY };
@@ -102,12 +105,21 @@ addEventListener("pointermove", (e) => {
 });
 addEventListener("pointerdown", (e) => {
   field.setPointer(e.clientX, e.clientY, true);
-  if (!slides[index]?.drag || e.target.closest("button")) return;
+  if (e.target.closest?.("button")) return;
+  const g = slides[index]?.game;
+  if (g && g.down(field.mouse.x, field.mouse.y)) {
+    game = g;
+    document.body.classList.add("dragging");
+    return;
+  }
+  if (!slides[index]?.drag) return;
   drag = { x: e.clientX, y: e.clientY };
   field.rot.dragging = true;
   document.body.classList.add("dragging");
 });
 addEventListener("pointerup", () => {
+  if (game) game.up();
+  game = null;
   drag = null;
   field.rot.dragging = false;
   document.body.classList.remove("dragging");
