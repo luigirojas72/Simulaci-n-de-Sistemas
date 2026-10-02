@@ -36,6 +36,13 @@ Una sola población de ~7000 partículas (personas) atraviesa toda la charla. En
 12. **El futuro se construye**: el edificio del Fórum se arma desde la base y los vínculos funcionan como andamio.
 13. **Continuidad**: vuelve el logo UPB Fórum en 2D y, debajo, el símbolo de los 90 años de la UPB en 3D, hecho de capas de partículas: adelante la generación joven y atrás la experiencia. De frente se ve una sola marca (una visión); al girarlo (clic y arrastrar) se ve que tiene profundidad porque está hecho de generaciones apiladas. Ambos se deforman al pasar el mouse y el vínculo los devuelve a su forma.
 
+## Interacción
+
+- **Pasar el mouse**: deforma la estructura; el vínculo la devuelve a su forma.
+- **Clic**: mini explosión de partículas que se regenera enseguida, en cualquier momento.
+- **Galaxia (momento 7)**: arrastrar orbita la cámara y la rueda acerca o aleja.
+- **Pong (momento 9)**: las barras son partículas vibrantes; clic sostenido para moverlas.
+
 ## Demostración en vivo
 
 - **X**: quita la generación joven. La estructura pierde sostén y cae.

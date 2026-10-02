@@ -122,10 +122,26 @@ export function makeGalaxy(A) {
   for (const t of targets) t.sizeG = t.size;
   applyColors();
 
-  const ct = Math.cos(TILT), st = Math.sin(TILT);
+  // Cámara: arrastrar orbita alrededor de la galaxia, la rueda acerca o aleja. Se mueve con suavidad.
+  const cam = { yaw: 0, pitch: 0, zoom: 1 };
+  const camT = { yaw: 0, pitch: 0, zoom: 1 };
+  const view = { cy: 1, sy: 0, cg: 1, sg: 0, cs: 1, ss: 0, zoom: 1 };
+
+  function update() {
+    cam.yaw += (camT.yaw - cam.yaw) * 0.12;
+    cam.pitch += (camT.pitch - cam.pitch) * 0.12;
+    cam.zoom += (camT.zoom - cam.zoom) * 0.12;
+    view.cy = Math.cos(cam.yaw);
+    view.sy = Math.sin(cam.yaw);
+    view.cg = Math.cos(TILT + cam.pitch);
+    view.sg = Math.sin(TILT + cam.pitch);
+    view.cs = Math.cos(0.18 + cam.pitch);
+    view.ss = Math.sin(0.18 + cam.pitch);
+    view.zoom = cam.zoom;
+  }
 
   function transform(p, t, el, out) {
-    let x, y, z, cp = ct, sp = st, yaw = 0;
+    let x, y, z, cp = view.cg, sp = view.sg, yaw = 0, useCam = true;
     const mode = state.mode;
     if (t.kind === "stream") {
       const u = (t.u0 + el * t.speed) % 1;
@@ -139,6 +155,7 @@ export function makeGalaxy(A) {
         sp = 0;
         y = z * 0.55;
         z = 0;
+        useCam = false;
       }
       // Al reiniciar el recorrido, la partícula reaparece afuera en vez de cruzar la pantalla.
       if (u < t.lastU) {
@@ -171,8 +188,13 @@ export function makeGalaxy(A) {
       x = s.x * k;
       y = s.y * k;
       z = s.z * k;
-      cp = Math.cos(0.18);
-      sp = Math.sin(0.18);
+      cp = view.cs;
+      sp = view.ss;
+    }
+    if (useCam) {
+      const nx = x * view.cy + z * view.sy;
+      z = -x * view.sy + z * view.cy;
+      x = nx;
     }
     if (yaw) {
       const c = Math.cos(yaw), si = Math.sin(yaw);
@@ -183,9 +205,10 @@ export function makeGalaxy(A) {
     const y2 = y * cp - z * sp;
     const z2 = y * sp + z * cp;
     const persp = F / (F + z2);
-    out[0] = CX + x * persp;
-    out[1] = CY + y2 * persp;
-    p.ds = persp * (t.tw && mode === "galaxy" ? 0.65 + 0.7 * Math.abs(Math.sin(el * 2.6 * (0.4 + p.phase) + p.phase * 30)) : 1);
+    const zp = persp * (useCam ? view.zoom : 1);
+    out[0] = CX + x * zp;
+    out[1] = CY + y2 * zp;
+    p.ds = zp * (t.tw && mode === "galaxy" ? 0.65 + 0.7 * Math.abs(Math.sin(el * 2.6 * (0.4 + p.phase) + p.phase * 30)) : 1);
   }
 
   return {
@@ -193,7 +216,19 @@ export function makeGalaxy(A) {
     get mode() {
       return state.mode;
     },
+    camera: {
+      drag(dx, dy) {
+        camT.yaw += dx * 0.006;
+        camT.pitch = Math.max(-0.8, Math.min(0.7, camT.pitch + dy * 0.005));
+      },
+      zoom(delta) {
+        camT.zoom = Math.max(0.5, Math.min(2.4, camT.zoom * Math.exp(-delta * 0.0012)));
+      },
+    },
     reset() {
+      Object.assign(camT, { yaw: 0, pitch: 0, zoom: 1 });
+      Object.assign(cam, camT);
+      update();
       state.mode = "galaxy";
       applyColors();
     },
@@ -205,6 +240,7 @@ export function makeGalaxy(A) {
     formation: {
       targets,
       transform,
+      update,
       k: 0.045,
       damp: 0.82,
       idle: 0.3,

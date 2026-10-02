@@ -56,10 +56,21 @@ export function capModel() {
   return pts;
 }
 
+// Barra de partículas vibrantes: cada una tiembla por su cuenta, como energía contenida.
 function paddle(group, gen) {
   const pts = [];
-  for (let x = -PADDLE_W / 2; x <= PADDLE_W / 2; x += 4.5) {
-    for (let y = -PADDLE_H / 2; y <= PADDLE_H / 2; y += 4.5) pts.push({ lx: x, ly: y, group, gen });
+  for (let x = -PADDLE_W / 2; x <= PADDLE_W / 2; x += 6) {
+    for (let y = -PADDLE_H / 2; y <= PADDLE_H / 2; y += 6) {
+      pts.push({
+        lx: x + (Math.random() - 0.5) * 3,
+        ly: y + (Math.random() - 0.5) * 3,
+        group,
+        gen,
+        idle: 2.5 + Math.random() * 2.5,
+        idleSpeed: 8 + Math.random() * 8,
+        size: 2.6 + Math.random() * 2.2,
+      });
+    }
   }
   return pts;
 }

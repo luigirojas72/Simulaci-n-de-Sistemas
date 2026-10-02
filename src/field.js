@@ -127,6 +127,22 @@ export class Field {
     this.mouse.on = on;
   }
 
+  // Clic: mini explosión local. Las partículas cercanas saltan y su vínculo las devuelve enseguida.
+  burst(x, y, radius = 120) {
+    const R2 = radius * radius;
+    for (const p of this.ps) {
+      const dx = p.x - x, dy = p.y - y;
+      const d2 = dx * dx + dy * dy;
+      if (d2 > R2) continue;
+      const d = Math.sqrt(d2) || 1;
+      const q = 1 - d / radius;
+      const v = (4 + Math.random() * 9) * (0.4 + q);
+      p.vx += (dx / d) * v + (Math.random() - 0.5) * 3;
+      p.vy += (dy / d) * v + (Math.random() - 0.5) * 3;
+      if (p.t) p.release = Math.max(p.release, 0.18 + Math.random() * 0.3);
+    }
+  }
+
   // Las partículas cuyo objetivo cumple `match` salen disparadas y vuelven a su lugar después de un rato.
   explode(x, y, match) {
     for (const p of this.ps) {
@@ -269,8 +285,8 @@ export class Field {
           hx = f.spin.x + dx * sc - dy * ss;
           hy = f.spin.y + dx * ss + dy * sc;
         }
-        const ia = rem !== null ? 0 : f.idleGen ? f.idleGen[p.gen] : f.idle;
-        const is = f.idleSpeedGen ? f.idleSpeedGen[p.gen] : f.idleSpeed;
+        const ia = rem !== null ? 0 : tg.idle ?? (f.idleGen ? f.idleGen[p.gen] : f.idle);
+        const is = tg.idleSpeed ?? (f.idleSpeedGen ? f.idleSpeedGen[p.gen] : f.idleSpeed);
         hx += Math.sin(t * is * (0.7 + p.phase * 0.6) + p.phase * 40) * ia;
         hy += Math.cos(t * is * (0.6 + p.phase * 0.7) + p.phase * 70) * ia;
 

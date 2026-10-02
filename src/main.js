@@ -50,7 +50,7 @@ function go(i) {
 
   $("brand").classList.toggle("hidden", s.brand === false);
   $("qr").classList.toggle("show", !!s.qr);
-  document.body.classList.toggle("draggable", !!s.drag || !!s.game);
+  document.body.classList.toggle("draggable", !!s.drag || !!s.game || !!s.shapes);
   $("pong-ui").classList.toggle("show", !!s.game);
   $("pong-ui").classList.remove("paused");
   $("pause").textContent = "❚❚";
@@ -133,15 +133,21 @@ addEventListener("keydown", (e) => {
   e.preventDefault();
 });
 
-// Arrastrar gira el objeto 3D del cierre; en el resto de momentos el puntero perturba la estructura.
+// Arrastrar gira el objeto 3D del cierre u orbita la cámara de la galaxia; en el resto de momentos
+// el puntero perturba la estructura. Un clic corto produce una mini explosión en cualquier momento.
 let drag = null;
 let game = null;
+let click = null;
 addEventListener("pointermove", (e) => {
   field.setPointer(e.clientX, e.clientY, true);
   if (game) game.move(field.mouse.x, field.mouse.y);
   if (!drag) return;
   const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
-  drag = { x: e.clientX, y: e.clientY };
+  drag = { ...drag, x: e.clientX, y: e.clientY };
+  if (drag.camera) {
+    drag.camera.drag(dx, dy);
+    return;
+  }
   field.rot.yaw += dx * 0.006;
   field.rot.vyaw = dx * 0.004;
   field.rot.pitch = Math.max(-1.2, Math.min(1.2, field.rot.pitch + dy * 0.006));
@@ -149,24 +155,41 @@ addEventListener("pointermove", (e) => {
 addEventListener("pointerdown", (e) => {
   field.setPointer(e.clientX, e.clientY, true);
   if (e.target.closest?.("button")) return;
+  click = { x: e.clientX, y: e.clientY, t: performance.now() };
   const g = slides[index]?.game;
   if (g && g.down(field.mouse.x, field.mouse.y)) {
     game = g;
     document.body.classList.add("dragging");
     return;
   }
-  if (!slides[index]?.drag) return;
-  drag = { x: e.clientX, y: e.clientY };
+  const camera = slides[index]?.shapes?.camera;
+  if (!slides[index]?.drag && !camera) return;
+  drag = { x: e.clientX, y: e.clientY, camera };
   field.rot.dragging = true;
   document.body.classList.add("dragging");
 });
-addEventListener("pointerup", () => {
+addEventListener("pointerup", (e) => {
+  if (click && Math.hypot(e.clientX - click.x, e.clientY - click.y) < 8 && performance.now() - click.t < 400) {
+    field.setPointer(e.clientX, e.clientY, true);
+    field.burst(field.mouse.x, field.mouse.y);
+  }
+  click = null;
   if (game) game.up();
   game = null;
   drag = null;
   field.rot.dragging = false;
   document.body.classList.remove("dragging");
 });
+addEventListener(
+  "wheel",
+  (e) => {
+    const camera = slides[index]?.shapes?.camera;
+    if (!camera) return;
+    camera.zoom(e.deltaY);
+    e.preventDefault();
+  },
+  { passive: false },
+);
 document.addEventListener("pointerleave", () => (field.mouse.on = false));
 addEventListener("blur", () => (field.mouse.on = false));
 addEventListener("resize", layout);
