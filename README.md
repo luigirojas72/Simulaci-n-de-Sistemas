@@ -2,6 +2,8 @@
 
 Presentación generativa para la charla *"Relevo generacional: la ventaja que nadie está aprovechando"* (Unidad 5, sistemas de partículas).
 
+Autoevaluación del proyecto: [AUTOEVALUACION.md](AUTOEVALUACION.md)
+
 ## Concepto: el espacio lo sostienen las relaciones
 
 Una sola población de ~7000 partículas (personas) atraviesa toda la charla. En cada momento del guion las **mismas** partículas se reorganizan en una estructura nueva: el logo, un auditorio de grados, tres actores, una red, dos generaciones, un edificio. La presentación no cambia de "diapositiva": cambia la forma en que las personas se relacionan.
