@@ -1,0 +1,154 @@
+import "./styles.css";
+import { Field, W, H } from "./field.js";
+import { buildSlides, N } from "./slides.js";
+
+const BASE = import.meta.env.BASE_URL;
+const $ = (id) => document.getElementById(id);
+
+function loadImage(name) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = `${BASE}assets/${name}`;
+  });
+}
+
+const canvas = $("field");
+const stage = $("stage");
+const field = new Field(canvas, N);
+let slides = [];
+let index = 0;
+if (import.meta.env.DEV) window.__field = field;
+
+function layout() {
+  const w = innerWidth, h = innerHeight;
+  const dpr = Math.min(devicePixelRatio || 1, 2);
+  field.resize(w, h, dpr);
+  const { s, ox, oy } = field.view;
+  stage.style.transform = `translate(${ox}px, ${oy}px) scale(${s})`;
+}
+
+function go(i) {
+  index = (i + slides.length) % slides.length;
+  const s = slides[index];
+  field.removeGen = null;
+  field.rot.yaw = 0;
+  field.rot.pitch = 0.2;
+  field.setFormation(s.formation);
+  $("demo").classList.remove("show");
+
+  const copy = $("copy");
+  copy.classList.remove("in");
+  copy.className = `copy layout-${s.layout}`;
+  $("kicker").textContent = s.kicker;
+  $("title").innerHTML = s.title;
+  void copy.offsetWidth;
+  copy.classList.add("in");
+
+  $("brand").classList.toggle("hidden", s.brand === false);
+  $("qr").classList.toggle("show", !!s.qr);
+  document.body.classList.toggle("draggable", !!s.drag);
+  $("count").textContent = `${String(index + 1).padStart(2, "0")}`;
+}
+
+// Demostración en vivo: quitar una generación y ver qué le pasa a la estructura.
+function toggleRemove(gen) {
+  field.removeGen = field.removeGen === gen ? null : gen;
+  const demo = $("demo");
+  if (field.removeGen === null) {
+    demo.classList.remove("show");
+    field.start = field.time - 99;
+    return;
+  }
+  demo.textContent =
+    gen === 1
+      ? "Sin la generación joven, la estructura pierde sostén y cae."
+      : "Sin la experiencia, la energía joven no encuentra estructura y se dispersa.";
+  demo.classList.add("show");
+}
+
+function toggleFullscreen() {
+  if (document.fullscreenElement) document.exitFullscreen();
+  else document.documentElement.requestFullscreen();
+}
+
+addEventListener("keydown", (e) => {
+  const k = e.key;
+  if (k === "ArrowRight" || k === " " || k === "PageDown" || k === "Enter") go(index + 1);
+  else if (k === "ArrowLeft" || k === "PageUp" || k === "Backspace") go(index - 1);
+  else if (k === "f" || k === "F") toggleFullscreen();
+  else if (k === "h" || k === "H") document.body.classList.toggle("clean");
+  else if (k === "l" || k === "L") $("legend").classList.toggle("show");
+  else if (k === "r" || k === "R") go(0);
+  else if (k === "x" || k === "X") toggleRemove(1);
+  else if (k === "z" || k === "Z") toggleRemove(0);
+  else if (k === "Home") go(0);
+  else if (k === "End") go(slides.length - 1);
+  else return;
+  e.preventDefault();
+});
+
+// Arrastrar gira el objeto 3D del cierre; en el resto de momentos el puntero perturba la estructura.
+let drag = null;
+addEventListener("pointermove", (e) => {
+  field.setPointer(e.clientX, e.clientY, true);
+  if (!drag) return;
+  const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+  drag = { x: e.clientX, y: e.clientY };
+  field.rot.yaw += dx * 0.006;
+  field.rot.vyaw = dx * 0.004;
+  field.rot.pitch = Math.max(-1.2, Math.min(1.2, field.rot.pitch + dy * 0.006));
+});
+addEventListener("pointerdown", (e) => {
+  field.setPointer(e.clientX, e.clientY, true);
+  if (!slides[index]?.drag || e.target.closest("button")) return;
+  drag = { x: e.clientX, y: e.clientY };
+  field.rot.dragging = true;
+  document.body.classList.add("dragging");
+});
+addEventListener("pointerup", () => {
+  drag = null;
+  field.rot.dragging = false;
+  document.body.classList.remove("dragging");
+});
+document.addEventListener("pointerleave", () => (field.mouse.on = false));
+addEventListener("blur", () => (field.mouse.on = false));
+addEventListener("resize", layout);
+
+$("prev").onclick = () => go(index - 1);
+$("next").onclick = () => go(index + 1);
+$("full").onclick = toggleFullscreen;
+$("help").onclick = () => $("legend").classList.toggle("show");
+
+let last = performance.now();
+let acc = 0;
+function frame(now) {
+  acc += Math.min(0.1, (now - last) / 1000);
+  last = now;
+  // Máximo 2 pasos por cuadro: en un equipo lento la simulación se ralentiza en vez de trabarse.
+  for (let i = 0; acc >= 1 / 60 && i < 2; i++) {
+    field.step();
+    acc -= 1 / 60;
+  }
+  if (acc > 1 / 30) acc = 0;
+  field.render();
+  requestAnimationFrame(frame);
+}
+
+async function init() {
+  layout();
+  const [brandForum, brand90, grados, entrada, evento, jovenes, edificio] = await Promise.all(
+    ["brand-forum.png", "brand-90.png", "grados.jpg", "entrada.jpg", "evento.jpg", "jovenes.jpg", "edificio.jpg"].map(loadImage),
+  );
+  await document.fonts.load("600 22px Inter");
+  slides = buildSlides({ brandForum, brand90, grados, entrada, evento, jovenes, edificio });
+  $("total").textContent = `/${slides.length}`;
+  $("loading").remove();
+  go(0);
+  requestAnimationFrame(frame);
+}
+
+init();
+
+export { W, H };
