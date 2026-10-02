@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Relevo generacional · Fórum UPB</title>
+    <script type="module" crossorigin src="./assets/index-Ln6J7te5.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-D-qDcGDU.css">
+  </head>
+  <body>
+    <canvas id="field"></canvas>
+
+    <div id="stage">
+      <img id="brand" src="./assets/brand-forum.png" alt="UPB Fórum Centro de Eventos" />
+      <img id="brand90" src="./assets/brand-90.png" alt="UPB 90 años" />
+
+      <section id="copy" class="copy">
+        <p id="kicker" class="kicker"></p>
+        <h1 id="title" class="title"></h1>
+      </section>
+
+      <div id="qr" class="qr">
+        <img src="./assets/qr-social.png" alt="QR a @centrodeeventosupb" />
+        <span>Síguenos y sigue conectado</span>
+      </div>
+
+      <p id="demo" class="demo"></p>
+
+      <div id="shapes" class="shapes">
+        <span>Dar forma</span>
+        <div id="shape-buttons"></div>
+      </div>
+
+      <div id="pong-ui" class="pong-ui">
+        <button id="pause" class="pause" aria-label="Pausar">❚❚</button>
+        <section id="pause-info" class="pause-info">
+          <p class="kicker">Juego pausado · ¿Qué está pasando aquí?</p>
+          <h2>Un relevo no es un reemplazo.</h2>
+          <ul>
+            <li><b class="cyan">Barra izquierda:</b> la generación joven, energía y mirada fresca.</li>
+            <li><b class="cream">Barra derecha:</b> la experiencia, estructura y criterio.</li>
+            <li><b class="purple">El birrete:</b> la visión compartida, la formación que el Fórum pone a circular.</li>
+            <li><b class="red">Si nadie la recibe,</b> la visión se rompe… pero vuelve a armarse. El relevo siempre puede empezar de nuevo.</li>
+          </ul>
+          <p id="pause-stats" class="pause-stats"></p>
+        </section>
+      </div>
+
+      <aside id="legend" class="legend">
+        <h2>Gramática visual</h2>
+        <ul>
+          <li><i class="dot cream"></i> Experiencia: partículas pesadas, lentas, estructurales</li>
+          <li><i class="dot cyan"></i> Generación joven: ligeras, rápidas, exploratorias</li>
+          <li><i class="line"></i> Línea: relación (roja: entre generaciones)</li>
+          <li><i class="dot dim"></i> Partícula suelta: potencial sin vínculo</li>
+          <li>Resorte al lugar: vínculo · rigidez: confianza · onda: impacto</li>
+        </ul>
+        <p>→ / espacio: avanzar · ←: volver · F: pantalla completa · H: ocultar controles · X / Z: quitar una generación · P: pausar el juego · 1–4: dar forma · clic: mini explosión · galaxia: arrastra y usa la rueda</p>
+      </aside>
+    </div>
+
+    <nav id="hud" class="hud">
+      <button id="prev" aria-label="Anterior">‹</button>
+      <span><b id="count">01</b><small id="total">/13</small></span>
+      <button id="next" aria-label="Siguiente">›</button>
+      <button id="full" aria-label="Pantalla completa">⛶</button>
+      <button id="help" aria-label="Gramática visual">?</button>
+    </nav>
+
+    <div id="loading">Cargando…</div>
+  </body>
+</html>
