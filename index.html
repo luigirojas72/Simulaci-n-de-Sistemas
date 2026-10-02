@@ -24,6 +24,26 @@
 
       <p id="demo" class="demo"></p>
 
+      <div id="shapes" class="shapes">
+        <span>Dar forma</span>
+        <div id="shape-buttons"></div>
+      </div>
+
+      <div id="pong-ui" class="pong-ui">
+        <button id="pause" class="pause" aria-label="Pausar">❚❚</button>
+        <section id="pause-info" class="pause-info">
+          <p class="kicker">Juego pausado · ¿Qué está pasando aquí?</p>
+          <h2>Un relevo no es un reemplazo.</h2>
+          <ul>
+            <li><b class="cyan">Barra izquierda:</b> la generación joven, energía y mirada fresca.</li>
+            <li><b class="cream">Barra derecha:</b> la experiencia, estructura y criterio.</li>
+            <li><b class="purple">El birrete:</b> la visión compartida, la formación que el Fórum pone a circular.</li>
+            <li><b class="red">Si nadie la recibe,</b> la visión se rompe… pero vuelve a armarse. El relevo siempre puede empezar de nuevo.</li>
+          </ul>
+          <p id="pause-stats" class="pause-stats"></p>
+        </section>
+      </div>
+
       <aside id="legend" class="legend">
         <h2>Gramática visual</h2>
         <ul>
@@ -33,7 +53,7 @@
           <li><i class="dot dim"></i> Partícula suelta: potencial sin vínculo</li>
           <li>Resorte al lugar: vínculo · rigidez: confianza · onda: impacto</li>
         </ul>
-        <p>→ / espacio: avanzar · ←: volver · F: pantalla completa · H: ocultar controles · X / Z: quitar una generación</p>
+        <p>→ / espacio: avanzar · ←: volver · F: pantalla completa · H: ocultar controles · X / Z: quitar una generación · P: pausar el juego · 1–4: dar forma</p>
       </aside>
     </div>
 

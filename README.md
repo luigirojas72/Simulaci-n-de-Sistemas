@@ -28,9 +28,9 @@ Una sola población de ~7000 partículas (personas) atraviesa toda la charla. En
 4. **Academia + Industria + Ciudad**: tres actores con forma, color y ritmo propios (símbolo UPB 90 años, engranaje, banderas de Colombia y Medellín).
 5. **El impacto sí**: los tres actores se acercan y su encuentro emite ondas que mueven todo el campo.
 6. **Comunidad**: una foto de un evento. Primero solo hay puntos (personas); luego aparecen las líneas y las personas cambian de color (transformación).
-7. **Confianza**: resortes rígidos y vínculos estables; la red crece sin dispersarse.
+7. **Confianza**: una galaxia de partículas que gira, con su núcleo amarillento lleno de astros brillantes. Las estrellas son talento; la gravedad que las mantiene unidas mientras giran es la confianza; las líneas que entran en espiral son talentos nuevos que se suman. Con **Dar forma** (botones o teclas 1–4) las mismas estrellas se convierten en birrete (formación), corazón que late (pasión) o logo UPB en 3D (institución), y vuelven a ser galaxia.
 8. **Rutas**: la experiencia se queda sobre los caminos; los jóvenes los recorren y algunos se desvían para abrir rutas nuevas.
-9. **Una visión, dos generaciones**: un juego de relevos (pong). La barra izquierda está hecha de jóvenes y la derecha de experiencia; se pasan una misma visión: un birrete UPB en 3D. Si nadie la devuelve y toca el borde, la visión se rompe en partículas y vuelve a armarse: el juego es infinito. El contador mide los relevos seguidos. Las barras se mueven con clic sostenido arrastrando de arriba a abajo.
+9. **Una visión, dos generaciones**: un juego de relevos (pong). La barra izquierda está hecha de jóvenes y la derecha de experiencia; se pasan una misma visión: un birrete UPB en 3D. Si nadie la devuelve y toca el borde, la visión se rompe en partículas y vuelve a armarse: el juego es infinito. El contador mide los relevos seguidos. Las barras se mueven con clic sostenido arrastrando de arriba a abajo. Con el botón de pausa (o la tecla P) el juego se congela, aparece la explicación de lo que significa y el botón queda pequeño a un costado para reanudar.
 10. **Trabajan juntas**: las mitades se mezclan y aparecen los vínculos rojos entre generaciones.
 11. **Los jóvenes son el presente**: solo la generación joven forma la imagen; la experiencia queda detrás.
 12. **El futuro se construye**: el edificio del Fórum se arma desde la base y los vínculos funcionan como andamio.
@@ -45,7 +45,7 @@ Sirve para mostrar en la exposición que el significado está en las relaciones,
 
 ## Controles
 
-`→` / espacio / PageDown: avanzar · `←` / PageUp: volver · `F`: pantalla completa · `H`: ocultar controles · `L` o `?`: gramática visual · `R`: reiniciar
+`→` / espacio / PageDown: avanzar · `←` / PageUp: volver · `F`: pantalla completa · `H`: ocultar controles · `L` o `?`: gramática visual · `R`: reiniciar · `P`: pausar el juego (momento 9) · `1`–`4`: dar forma (momento 7)
 
 ## Ejecutar
 
@@ -60,6 +60,7 @@ npm run dev
 
 - `src/field.js`: motor de partículas (resortes, ondas, vínculos, demostración).
 - `src/slides.js`: guion y estructura de cada momento.
+- `src/galaxy.js`: galaxia del momento 7 y sus formas (birrete, corazón, logo UPB).
 - `src/pong.js`: juego de relevos del momento 9 (birrete 3D, barras, explosión).
 - `src/shapes.js`: convierte fotos, logos y figuras en puntos objetivo.
 - `src/main.js`: navegación, texto y controles.

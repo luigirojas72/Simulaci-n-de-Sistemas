@@ -36,6 +36,7 @@ function go(i) {
   field.rot.yaw = 0;
   field.rot.pitch = 0.2;
   if (s.game) s.game.reset();
+  if (s.shapes) s.shapes.reset();
   field.setFormation(s.formation);
   $("demo").classList.remove("show");
 
@@ -50,7 +51,47 @@ function go(i) {
   $("brand").classList.toggle("hidden", s.brand === false);
   $("qr").classList.toggle("show", !!s.qr);
   document.body.classList.toggle("draggable", !!s.drag || !!s.game);
+  $("pong-ui").classList.toggle("show", !!s.game);
+  $("pong-ui").classList.remove("paused");
+  $("pause").textContent = "❚❚";
+  $("shapes").classList.toggle("show", !!s.shapes);
+  if (s.shapes) renderShapeButtons(s.shapes);
   $("count").textContent = `${String(index + 1).padStart(2, "0")}`;
+}
+
+// Pausa del juego de relevos: muestra qué significa y el botón se encoge a un costado.
+function togglePause() {
+  const g = slides[index]?.game;
+  if (!g) return;
+  g.setPaused(!g.paused);
+  $("pong-ui").classList.toggle("paused", g.paused);
+  $("pause").textContent = g.paused ? "▶" : "❚❚";
+  $("pause").setAttribute("aria-label", g.paused ? "Reanudar" : "Pausar");
+  if (g.paused) {
+    const st = g.stats();
+    $("pause-stats").textContent = `Relevos en esta partida: ${st.total} · Mejor racha: ${st.best}`;
+  }
+}
+
+// "Dar forma": las mismas partículas de la galaxia toman otra figura.
+function renderShapeButtons(shapes) {
+  const box = $("shape-buttons");
+  box.innerHTML = "";
+  shapes.modes.forEach((mode, i) => {
+    const b = document.createElement("button");
+    b.textContent = mode.label;
+    b.title = `Tecla ${i + 1}`;
+    b.classList.toggle("active", shapes.mode === mode.id);
+    b.onclick = () => setShape(mode.id);
+    box.appendChild(b);
+  });
+}
+
+function setShape(id) {
+  const shapes = slides[index]?.shapes;
+  if (!shapes) return;
+  shapes.setMode(field, id);
+  renderShapeButtons(shapes);
 }
 
 // Demostración en vivo: quitar una generación y ver qué le pasa a la estructura.
@@ -84,6 +125,8 @@ addEventListener("keydown", (e) => {
   else if (k === "r" || k === "R") go(0);
   else if (k === "x" || k === "X") toggleRemove(1);
   else if (k === "z" || k === "Z") toggleRemove(0);
+  else if (k === "p" || k === "P") togglePause();
+  else if (k >= "1" && k <= "4" && slides[index]?.shapes) setShape(slides[index].shapes.modes[+k - 1].id);
   else if (k === "Home") go(0);
   else if (k === "End") go(slides.length - 1);
   else return;
@@ -131,6 +174,7 @@ addEventListener("resize", layout);
 $("prev").onclick = () => go(index - 1);
 $("next").onclick = () => go(index + 1);
 $("full").onclick = toggleFullscreen;
+$("pause").onclick = togglePause;
 $("help").onclick = () => $("legend").classList.toggle("show");
 
 let last = performance.now();

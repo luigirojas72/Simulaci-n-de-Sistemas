@@ -19,7 +19,7 @@ function pt(lx, ly, z, c) {
 }
 
 // Birrete en 3D (coordenadas locales, y hacia abajo): tablero cuadrado, casquete y cordón con borla.
-function capModel() {
+export function capModel() {
   const pts = [];
   const S = 78, top = -30, step = 7;
   for (let x = -S; x <= S; x += step) {
@@ -73,6 +73,8 @@ export function makePong() {
   const score = { text: "", x: 960, y: 310 };
   const ball = { x: CENTER.x, y: CENTER.y, vx: 0, vy: 0, wait: 0, rally: 0, best: 0 };
   let grab = null;
+  let paused = false;
+  let total = 0;
 
   function serve() {
     const dir = Math.random() < 0.5 ? -1 : 1;
@@ -82,6 +84,8 @@ export function makePong() {
   }
 
   function reset() {
+    paused = false;
+    total = 0;
     ball.x = CENTER.x;
     ball.y = CENTER.y;
     ball.wait = 1.2;
@@ -102,12 +106,15 @@ export function makePong() {
     ball.vx = Math.cos(a) * speed * side;
     ball.vy = Math.sin(a) * speed;
     ball.rally++;
+    total++;
     ball.best = Math.max(ball.best, ball.rally);
     return true;
   }
 
   function update(field) {
     const dt = 1 / 60;
+    // En pausa la visión queda suspendida donde estaba, girando.
+    if (paused) return;
     if (ball.wait > 0) {
       ball.wait -= dt;
       if (ball.wait <= 0) serve();
@@ -139,7 +146,18 @@ export function makePong() {
   return {
     reset,
     // Clic sobre una barra para tomarla; se mueve de arriba a abajo hasta soltar.
+    get paused() {
+      return paused;
+    },
+    setPaused(v) {
+      paused = v;
+      grab = null;
+    },
+    stats() {
+      return { rally: ball.rally, best: ball.best, total };
+    },
     down(x, y) {
+      if (paused) return false;
       grab = paddles.find((p) => Math.abs(x - p.x) < 80 && Math.abs(y - p.y) < PADDLE_H / 2 + 40) || null;
       if (grab) grab.offset = y - grab.y;
       return !!grab;

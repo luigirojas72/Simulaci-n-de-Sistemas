@@ -1,6 +1,7 @@
 // Guion del cliente (secuencia intacta) y la estructura que cada momento construye.
 import { W, H } from "./field.js";
 import { makePong } from "./pong.js";
+import { makeGalaxy } from "./galaxy.js";
 import { sampleShape, samplePhoto, place, local, drawContain, drawCap, drawGear, drawFlags } from "./shapes.js";
 
 const N = 7000;
@@ -57,6 +58,7 @@ export function buildSlides(A) {
   const logoClose = logo(A.brandForum, 510, 110, 900, 3000);
 
   const pong = makePong();
+  const galaxy = makeGalaxy(A);
 
   // Símbolo de 90 años en capas: adelante la generación joven, atrás la experiencia.
   const symbol3d = [];
@@ -189,21 +191,10 @@ export function buildSlides(A) {
       kicker: "Confianza",
       title: "El talento crece a la velocidad de la confianza.",
       layout: "left",
-      // Resortes rígidos y vínculos estables: la red crece sin dispersarse.
-      formation: {
-        targets: disc(1330, 540, 400, 3200),
-        k: 0.06,
-        idle: 0.7,
-        idleSpeed: 0.5,
-        colorMode: "gen",
-        size: 3.4,
-        grow: { x: 1330, y: 540, from: 0.45, to: 1.05, dur: 9 },
-        links: { exp: 0.9, jov: 0.9, cross: 0.9 },
-        linkDist: 64,
-        maxLinks: 5,
-        linkRamp: 3,
-        ambientAlpha: 0.18,
-      },
+      // Galaxia: el talento (estrellas) gira y crece sin dispersarse porque la confianza (gravedad) lo sostiene.
+      // Botones "Dar forma": birrete, corazón y logo UPB. Ver galaxy.js.
+      shapes: galaxy,
+      formation: galaxy.formation,
     },
     {
       kicker: "Rutas",

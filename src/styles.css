@@ -320,3 +320,148 @@ body.clean {
   text-transform: uppercase;
   opacity: 0.6;
 }
+
+/* Dar forma (galaxia) */
+.shapes {
+  position: absolute;
+  left: 1300px;
+  bottom: 50px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s 0.4s;
+}
+
+.shapes.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.shapes > span {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+
+#shape-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+#shape-buttons button,
+.pause {
+  border: 1px solid rgba(247, 247, 244, 0.25);
+  background: rgba(10, 12, 14, 0.75);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+#shape-buttons button {
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-size: 22px;
+  font-weight: 600;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+#shape-buttons button:hover {
+  background: rgba(247, 247, 244, 0.14);
+}
+
+#shape-buttons button.active {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  color: #04131a;
+}
+
+/* Pausa del juego de relevos */
+.pong-ui {
+  display: none;
+}
+
+.pong-ui.show {
+  display: block;
+}
+
+.pause {
+  position: absolute;
+  left: 960px;
+  top: 340px;
+  width: 64px;
+  height: 64px;
+  margin-left: -32px;
+  border-radius: 50%;
+  font-size: 22px;
+  pointer-events: auto;
+  transition: left 0.6s ease, top 0.6s ease, width 0.6s ease, height 0.6s ease, margin 0.6s ease, font-size 0.6s ease, background 0.2s;
+}
+
+.pause:hover {
+  background: rgba(247, 247, 244, 0.16);
+}
+
+.pong-ui.paused .pause {
+  left: 1868px;
+  top: 512px;
+  width: 44px;
+  height: 44px;
+  margin-left: -22px;
+  font-size: 16px;
+  background: var(--red);
+  border-color: var(--red);
+}
+
+.pause-info {
+  position: absolute;
+  left: 50%;
+  top: 380px;
+  width: 1000px;
+  transform: translate(-50%, 20px);
+  padding: 40px 52px;
+  border-radius: 18px;
+  background: rgba(10, 12, 14, 0.92);
+  border: 1px solid rgba(247, 247, 244, 0.15);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+.pong-ui.paused .pause-info {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.pause-info h2 {
+  margin: 0 0 24px;
+  font-size: 52px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.pause-info ul {
+  margin: 0 0 24px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 14px;
+  font-size: 26px;
+  line-height: 1.35;
+}
+
+.pause-stats {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  opacity: 0.7;
+}
+
+.cyan { color: var(--cyan); }
+.cream { color: var(--cream); }
+.purple { color: #a874e8; }
+.red { color: var(--red); }
