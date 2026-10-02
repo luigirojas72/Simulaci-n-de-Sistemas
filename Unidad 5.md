@@ -2,6 +2,7 @@
 
 **Proyecto:** presentación generativa para la charla *"Relevo generacional: la ventaja que nadie está aprovechando"*, Centro de Eventos Fórum UPB.
 
+- **Presentación en vivo:** https://luigirojas72.github.io/Simulaci-n-de-Sistemas/
 - Código del proyecto: [Unidad5/](Unidad5/)
 - Explicación técnica y controles: [Unidad5/README.md](Unidad5/README.md)
 - Autoevaluación detallada: [Unidad5/AUTOEVALUACION.md](Unidad5/AUTOEVALUACION.md)
