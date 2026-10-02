@@ -34,7 +34,7 @@ Una sola población de ~7000 partículas (personas) atraviesa toda la charla. En
 10. **Trabajan juntas**: las mitades se mezclan y aparecen los vínculos rojos entre generaciones.
 11. **Los jóvenes son el presente**: solo la generación joven forma la imagen; la experiencia queda detrás.
 12. **El futuro se construye**: el edificio del Fórum se arma desde la base y los vínculos funcionan como andamio.
-13. **Continuidad**: el símbolo de los 90 años de la UPB en 3D, hecho de capas de partículas: adelante la generación joven y atrás la experiencia. De frente se ve una sola marca (una visión); al girarlo (arrastrando el mouse) se ve que tiene profundidad porque está hecho de generaciones apiladas.
+13. **Continuidad**: vuelve el logo UPB Fórum en 2D y, debajo, el símbolo de los 90 años de la UPB en 3D, hecho de capas de partículas: adelante la generación joven y atrás la experiencia. De frente se ve una sola marca (una visión); al girarlo (clic y arrastrar) se ve que tiene profundidad porque está hecho de generaciones apiladas. Ambos se deforman al pasar el mouse y el vínculo los devuelve a su forma.
 
 ## Demostración en vivo
 

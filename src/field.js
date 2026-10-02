@@ -285,7 +285,8 @@ export class Field {
         }
       }
 
-      if (mOn) {
+      // Mientras se arrastra para girar, el puntero no empuja partículas.
+      if (mOn && !rot.dragging) {
         const dx = p.x - mx, dy = p.y - my;
         const d2 = dx * dx + dy * dy;
         if (d2 < R2 && d2 > 0.01) {

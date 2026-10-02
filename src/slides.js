@@ -53,13 +53,15 @@ export function buildSlides(A) {
   ];
 
   const logoTitle = logo(A.brandForum, 260, 200, 1400, 5000);
+  const logoClose = logo(A.brandForum, 510, 110, 900, 3000);
+
   // Símbolo de 90 años en capas: adelante la generación joven, atrás la experiencia.
   const symbol3d = [];
   const LAYERS = 7;
   for (let i = 0; i < LAYERS; i++) {
     const z = -90 + (180 * i) / (LAYERS - 1);
     const gen = z < 0 ? 1 : z > 0 ? 0 : undefined;
-    for (const p of local(sampleShape((g, w, h) => drawContain(g, A.brand90, w, h), 440, 520, 780), 440, 520)) {
+    for (const p of local(sampleShape((g, w, h) => drawContain(g, A.brand90, w, h), 340, 400, 540), 340, 400)) {
       symbol3d.push({ lx: p.lx, ly: p.ly, z: z + (Math.random() - 0.5) * 8, gen });
     }
   }
@@ -329,24 +331,21 @@ export function buildSlides(A) {
       kicker: "Continuidad",
       title: "@centrodeeventosupb",
       layout: "close",
+      brand: false,
       qr: true,
       drag: true,
-      // Cierre: 90 años como una estructura con profundidad. De frente es una sola marca;
-      // al girarla se ve que está hecha de capas de generaciones. Se gira arrastrando.
+      // Cierre: vuelve la marca (2D) y debajo los 90 años como estructura con profundidad (3D).
+      // De frente es una sola marca; al girarla se ve que está hecha de capas de generaciones.
+      // Ambas se deforman con el puntero; el símbolo 3D se gira arrastrando.
       formation: {
-        targets: symbol3d,
-        rot3d: { x: 1060, y: 450, f: 900, auto: 0.006 },
-        k: 0.08,
-        damp: 0.78,
-        mouse: 0,
-        idle: 0.6,
-        colorMode: "gen",
-        size: 3,
-        labels: [{ text: "ARRASTRA PARA GIRAR", x: 1060, y: 790 }],
-        links: { exp: 0.5, jov: 0.5, cross: 0.8 },
-        linkAmbient: true,
-        linkDist: 90,
-        linkRamp: 3,
+        targets: [...logoClose, ...symbol3d],
+        rot3d: { x: 960, y: 560, f: 900, auto: 0.006 },
+        k: 0.035,
+        damp: 0.84,
+        mouse: 2,
+        idle: 0.8,
+        size: 2.6,
+        labels: [{ text: "ARRASTRA PARA GIRAR", x: 960, y: 820 }],
         ambientAlpha: 0.55,
         ambientSize: 2.6,
         ambientSpeed: 0.7,
